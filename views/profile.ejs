@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="h-screen w-full bg-zinc-900 p-10 text-white">
+      <div class="flex w-full justify-end">
+        <a class="py-2 px-3 bg-red-500 rounded-lg" href="/logout">logout</a>
+      </div>
+      <h1 class="text-3xl">Hello, <%= users.username %></h1>
+      <h4 class="mb-5">You can create a new post.</h4>
+      <form action="/post" method="post">
+        <textarea
+          class="w-1/3 bg-transparent border-2 border-zinc-600 rounded-lg p-3"
+          name="content"
+          placeholder="What's on your mind?"
+          value=""
+        ></textarea>
+        <button
+          type="submit"
+          class="px-3 py-2 mt-3 bg-blue-500 rounded-lg block"
+        >
+          Create new post
+        </button>
+      </form>
+      <div class="posts mt-10">
+        <h3 class="text-zinc-600 mb-2">Your posts.</h3>
+        <div class="postcontainer">
+          <% users.posts.forEach((post)=>{%>
+          <div
+            class="post bg-zinc-900 w-1/3 border-[1px] border-zinc-800 p-3 rounded-lg mb-5"
+          >
+            <h3 class="text-blue-400 mb-1"><%= users.username %></h3>
+            <h4 class="text-sm tracking-tighter"><%= post.content %></h4>
+            <h5 class="inline-block mt-2 text-zinc-600">
+              <%= post.likes.length %> likes
+            </h5>
+            <div class="btns flex gap-5 mt-1">
+              <a class="text-blue-400" href="/like/<%= post._id %>"
+                ><%= post.likes.indexOf(users._id) === -1 ? "Like":"unlike"
+                %></a
+              >
+              <a class="text-zinc-400" href="/edit/<%= post._id %>">Edit</a>
+            </div>
+          </div>
+          <%}) %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
