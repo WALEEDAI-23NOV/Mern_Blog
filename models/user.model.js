@@ -27,7 +27,11 @@ const userSchema = new Schema({
         {type:mongoose.SchemaTypes.ObjectId,
          ref:"post"
         }
-    ]
+    ],
+    profilepic:{
+        type:String,
+        default:"default.jpg"
+    }
 });
 
 const userModel = mongoose.model('user',userSchema);

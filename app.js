@@ -3,12 +3,15 @@ const express = require("express");
 const dbconnect = require("./dbconnect");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const path = require('path');
 const userModel = require("./models/user.model");
 const postModel = require("./models/posts.model");
+const upload = require("./multer");
 const app = express();
 
 app.set("view engine", "ejs");
 app.use(express.json());
+app.use(express.static(path.join(__dirname,"public")))
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 dbconnect();
@@ -107,6 +110,12 @@ app.post("/update/:id", loggedin, async (req, res) => {
   const post = await postModel.findByIdAndUpdate({ _id: id },{content:req.body.content})
   res.redirect('/profile')
 });
+app.get("/test",(req,res)=>{
+ res.render('test')
+});
+app.post("/upload",upload.single('image'),(req,res)=>{
+res.send("uploaded")
+})
 function loggedin(req, res, next) {
   if (req.cookies.token === "") {
     res.redirect("/login");
